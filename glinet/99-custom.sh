@@ -185,4 +185,37 @@ else
     exit 0
 fi
 
+# Fix wget-hsts
+HSTS_FILE="/root/.wget-hsts"
+
+# 日志函数（输出到标准错误，同时可追加到 LOGFILE 若已定义）
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $*" >&2
+    [ -n "$LOGFILE" ] && echo "$(date '+%Y-%m-%d %H:%M:%S') - $*" >> "$LOGFILE"
+}
+
+# 1. 如果文件已存在但不是常规文件（如目录、链接等），则删除
+if [ -e "$HSTS_FILE" ] && [ ! -f "$HSTS_FILE" ]; then
+    log "$HSTS_FILE 存在但不是常规文件，正在删除..."
+    rm -f "$HSTS_FILE"
+fi
+
+# 2. 如果文件不存在，创建空文件
+if [ ! -f "$HSTS_FILE" ]; then
+    log "创建 $HSTS_FILE"
+    touch "$HSTS_FILE"
+fi
+
+# 3. 修正权限：确保属主为 root，且非世界可写（600）
+CURRENT_PERM=$(stat -c "%a" "$HSTS_FILE" 2>/dev/null || echo "000")
+if [ "$CURRENT_PERM" != "600" ] && [ "$CURRENT_PERM" != "400" ]; then
+    log "修正 $HSTS_FILE 权限从 $CURRENT_PERM 改为 600"
+    chmod 600 "$HSTS_FILE"
+else
+    log "$HSTS_FILE 权限已正确 ($CURRENT_PERM)"
+fi
+
+log "HSTS 存储文件准备完成，wget 不再报错"
+
+
 exit 0
