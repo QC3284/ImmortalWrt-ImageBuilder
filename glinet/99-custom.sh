@@ -105,4 +105,84 @@ FILE_PATH="/etc/openwrt_release"
 NEW_DESCRIPTION="Packaged by wukongdaily"
 sed -i "s/DISTRIB_DESCRIPTION='[^']*'/DISTRIB_DESCRIPTION='$NEW_DESCRIPTION'/" "$FILE_PATH"
 
+#!/bin/sh
+
+#!/bin/sh
+
+# Openssh
+# 日志函数
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $*" >> "$LOGFILE"
+}
+
+# 检查软件包是否已安装（支持 apk 和 opkg）
+is_pkg_installed() {
+    pkg="$1"
+    if command -v apk >/dev/null 2>&1; then
+        apk list --installed 2>/dev/null | grep -q "^${pkg}-" || apk list --installed 2>/dev/null | grep -q "^${pkg}$"
+        return $?
+    elif command -v opkg >/dev/null 2>&1; then
+        opkg list-installed 2>/dev/null | grep -q "^${pkg} -"
+        return $?
+    else
+        return 1
+    fi
+}
+
+log "开始检测 OpenSSH 环境"
+
+# 条件：安装了 openssh-server 或存在 /etc/ssh 目录
+if is_pkg_installed "openssh-server" || [ -d "/etc/ssh" ]; then
+    log "检测到 openssh-server 或 /etc/ssh 目录，开始切换至 OpenSSH"
+
+    # 0. 禁用并停止 dropbear
+    if [ -x "/etc/init.d/dropbear" ]; then
+        log "禁用 dropbear"
+        /etc/init.d/dropbear disable >> "$LOGFILE" 2>&1
+        /etc/init.d/dropbear stop >> "$LOGFILE" 2>&1
+    else
+        log "dropbear 服务脚本不存在，跳过"
+    fi
+
+    # 1. 修改 sshd_config 允许 root 登录
+    SSH_CONFIG="/etc/ssh/sshd_config"
+    if [ -f "$SSH_CONFIG" ]; then
+        log "配置 sshd 允许 root 登录"
+        sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' "$SSH_CONFIG"
+        sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' "$SSH_CONFIG"
+    else
+        log "错误：$SSH_CONFIG 不存在"
+        exit 1
+    fi
+
+    # 2. 创建 /root/.ssh/ 目录
+    mkdir -p /root/.ssh/ >> "$LOGFILE" 2>&1
+
+    # 3. 复制 dropbear 密钥到 /root/.ssh/
+    if [ -d "/etc/dropbear" ]; then
+        log "复制 /etc/dropbear/* 到 /root/.ssh/"
+        cp -f /etc/dropbear/* /root/.ssh/ >> "$LOGFILE" 2>&1
+    else
+        log "警告：/etc/dropbear 目录不存在，无密钥可复制"
+    fi
+
+    # 4. 启用 sshd
+    if [ -x "/etc/init.d/sshd" ]; then
+        log "启用 sshd"
+        /etc/init.d/sshd enable >> "$LOGFILE" 2>&1
+    else
+        log "错误：/etc/init.d/sshd 不存在"
+        exit 1
+    fi
+
+    # 5. 重启 sshd
+    log "重启 sshd"
+    /etc/init.d/sshd restart >> "$LOGFILE" 2>&1
+
+    log "切换完成，请确保防火墙放行 22 端口"
+else
+    log "未检测到 openssh-server 或 /etc/ssh 目录，脚本退出"
+    exit 0
+fi
+
 exit 0
