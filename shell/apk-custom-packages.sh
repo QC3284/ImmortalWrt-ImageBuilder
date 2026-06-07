@@ -5,13 +5,13 @@
 
 # 各位注意 如果你构建的固件是硬路由 此文件的注释要酌情考虑是否打开 因为硬路由的闪存空间有限 若构建出来过大或者构建失败 记得调整本文件的注释
 # 新增非常好用的文件管理器 by github sbwml
-#CUSTOM_PACKAGES="$CUSTOM_PACKAGES bash quickfile luci-app-quickfile luci-i18n-quickfile-zh-cn"
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES bash quickfile luci-app-quickfile luci-i18n-quickfile-zh-cn"
 # 极光主题和配置 by github eamonxg
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-theme-aurora luci-app-aurora-config luci-i18n-aurora-config-zh-cn"
 # 分区扩容 by sirpdboy 
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-partexp luci-i18n-partexp-zh-cn"
 # 流量监控 by timsaya
-#CUSTOM_PACKAGES="$CUSTOM_PACKAGES bandix luci-app-bandix luci-i18n-bandix-zh-cn"
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES bandix luci-app-bandix luci-i18n-bandix-zh-cn"
 # 新增ssrp apk
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES xray-core naiveproxy luci-app-ssr-plus luci-i18n-ssr-plus-zh-cn"
 # 新增passwall2 apk
@@ -19,9 +19,9 @@
 # IPTV 流媒体转发服务器 - rtp2httpd by stackia
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-rtp2httpd luci-i18n-rtp2httpd-zh-cn"
 # 新增 clashoo by kenzok8
-#CUSTOM_PACKAGES="$CUSTOM_PACKAGES clashoo luci-app-clashoo luci-i18n-clashoo-zh-cn"
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES clashoo luci-app-clashoo luci-i18n-clashoo-zh-cn"
 # 新增 Lucky大吉 by gdy666 & sirpdboy 
-#CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-lucky lucky luci-i18n-lucky-zh-cn"
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-lucky lucky luci-i18n-lucky-zh-cn"
 
 # 仓库内代理相关apk
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-nikki-zh-cn"
@@ -180,3 +180,5 @@
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-wifischedule-zh-cn"
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-xinetd-zh-cn"
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-xlnetacc-zh-cn"
+
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES kmod-hwmon-gpiofan luci-i18n-advanced-reboot-zh-cn luci-i18n-argon-config-zh-cn luci-i18n-autoreboot-zh-cn luci-i18n-base-zh-cn luci-i18n-cloudflared-zh-cn luci-i18n-ddns-go-zh-cn luci-i18n-diskman-zh-cn luci-i18n-filebrowser-go-zh-cn luci-i18n-filemanager-zh-cn luci-i18n-firewall-zh-cn luci-i18n-frpc-zh-cn luci-i18n-natmap-zh-cn luci-i18n-netdata-zh-cn luci-i18n-openvpn-zh-cn luci-i18n-package-manager-zh-cn luci-i18n-ramfree-zh-cn luci-i18n-samba4-zh-cn luci-i18n-timewol-zh-cn luci-i18n-ttyd-zh-cn luci-i18n-upnp-zh-cn luci-i18n-vlmcsd-zh-cn luci-i18n-wol-zh-cn luci-i18n-smartdns-zh-cn luci-i18n-aria2-zh-cn luci-i18n-samba4-zh-cn luci-i18n-passwall-zh-cn luci-app-chrony openssh-server zram-swap kmod-nft-fullcone 7z bsdtar unzip unrar zstd wget-ssl curl xz gzip tar -ntpd openssh-sftp-client openssh-sftp-server openssh-client-utils coremark luci-app-adguardhome luci-app-openclash kmod-usb-net kmod-usb-net-asix kmod-usb-net-asix-ax88179 kmod-usb-net-cdc-eem kmod-usb-net-cdc-ether kmod-usb-net-cdc-mbim kmod-usb-net-cdc-ncm kmod-usb-net-cdc-subset kmod-usb-net-rndis kmod-usb-net-huawei-cdc-ncm usb-modeswitch kmod-usb-serial kmod-usb-serial-ch341 kmod-usb-serial-ch348 kmod-usb-serial-cp210x kmod-usb-net-hso kmod-gpio-pwm kmod-usb-net-ipheth kmod-usb-net-kalmia kmod-usb-net-kaweth kmod-usb-net-lan78xx kmod-usb-net-mcs7830 kmod-usb-net-pegasus kmod-usb-net-pl kmod-usb-net-qmi-wwan kmod-usb-net-qmi-wwan-fibocom kmod-usb-net-qmi-wwan-quectel kmod-usb-net-rtl8150 kmod-usb-net-sierrawireless kmod-usb-net-smsc75xx kmod-usb-net-smsc95xx kmod-zram kmod-mii kmod-fs-exfat kmod-fs-vfat kmod-fs-ntfs3 kmod-fs-ext4 kmod-fs-xfs kmod-fs-squashfs kmod-lib-lz4 kmod-lib-lzo kmod-lib-zstd luci-nginx nano-full vim-fuller atop htop btop bash zsh zoneinfo-all rsync aria2-openssl adb ethtool-full fdisk cfdisk btrfs-progs usbutils"
