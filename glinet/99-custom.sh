@@ -217,5 +217,18 @@ fi
 
 log "HSTS 存储文件准备完成，wget 不再报错"
 
+uci set nginx.global.uci_enable='true'
+uci del nginx._lan
+uci del nginx._redirect2ssl
+uci add nginx server
+uci rename nginx.@server[0]='_lan'
+uci set nginx._lan.server_name='_lan'
+uci add_list nginx._lan.listen='80 default_server'
+uci add_list nginx._lan.listen='[::]:80 default_server'
+uci add_list nginx._lan.include='conf.d/*.locations'
+uci set nginx._lan.access_log='off; # logd openwrt'
+uci commit nginx
+service nginx restart
+
 
 exit 0
